@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { CineDialog } from '@ohif/ui';
 import OHIF from '@ohif/core';
 import csTools from 'cornerstone-tools';
-import { commandsManager } from './../App.js';
+import { commandsManager } from './../Batman.js';
 // Our target output kills the `as` and "import" throws a keyword error
 // import { import as toolImport, getToolState } from 'cornerstone-tools';
 import cloneDeep from 'lodash.clonedeep';

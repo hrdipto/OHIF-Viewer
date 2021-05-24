@@ -18,7 +18,7 @@
     "build:demo": "lerna run build:viewer:demo --stream",
     "build:package": "lerna run build:viewer:package --stream",
     "build:package-all": "lerna run build:package --parallel --stream",
-    "dev": "lerna run dev:viewer --stream",
+    "dev": "lerna run dev:demo --stream",
     "dev:lt": "lerna run dev:viewer:lesion-tracker --stream",
     "dev:project": ".scripts/dev.sh",
     "dev:orthanc": "lerna run dev:orthanc --stream",

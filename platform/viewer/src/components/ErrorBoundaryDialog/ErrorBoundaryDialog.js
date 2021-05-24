@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { ErrorBoundary, Icon } from '@ohif/ui';
-import { servicesManager } from './../../App';
+import { servicesManager } from './../../Batman';
 
 import './ErrorBoundaryDialog.css';
 

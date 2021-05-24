@@ -5,9 +5,7 @@
 
 import 'regenerator-runtime/runtime';
 
-import App from './App.js';
-import React from 'react';
-import ReactDOM from 'react-dom';
+import Superman from './Superman.js';
 // test
 
 /**
@@ -23,43 +21,13 @@ import ReactDOM from 'react-dom';
  * by using the exported `App` component, and passing in your extensions as props using
  * the defaultExtensions property.
  */
-import OHIFVTKExtension from '@ohif/extension-vtk';
-import OHIFDicomHtmlExtension from '@ohif/extension-dicom-html';
-import OHIFDicomSegmentationExtension from '@ohif/extension-dicom-segmentation';
-import OHIFDicomRtExtension from '@ohif/extension-dicom-rt';
-import OHIFDicomMicroscopyExtension from '@ohif/extension-dicom-microscopy';
-import OHIFDicomPDFExtension from '@ohif/extension-dicom-pdf';
+
 //import OHIFDicomTagBrowserExtension from '@ohif/extension-dicom-tag-browser';
 // Add this for Debugging purposes:
 //import OHIFDebuggingExtension from '@ohif/extension-debugging';
-import { version } from '../package.json';
 
 /*
  * Default Settings
  */
-let config = {};
 
-if (window) {
-  config = window.config || {};
-  window.version = version;
-}
-
-const appProps = {
-  config,
-  defaultExtensions: [
-    OHIFVTKExtension,
-    OHIFDicomHtmlExtension,
-    OHIFDicomMicroscopyExtension,
-    OHIFDicomPDFExtension,
-    OHIFDicomSegmentationExtension,
-    OHIFDicomRtExtension,
-    //OHIFDebuggingExtension,
-    //OHIFDicomTagBrowserExtension,
-  ],
-};
-
-/** Create App */
-const app = React.createElement(App, appProps, null);
-
-/** Render */
-ReactDOM.render(app, document.getElementById('root'));
+export default Superman;

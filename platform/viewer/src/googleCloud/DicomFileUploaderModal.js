@@ -2,20 +2,20 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import DicomUploader from './DicomUploader';
 import { withTranslation } from 'react-i18next';
-import { servicesManager } from './../App.js';
+import { servicesManager } from './../Batman.js';
 
 function DicomFileUploaderModal({
-                                 isOpen = false,
-                                 onClose,
-                                 url,
-                                 retrieveAuthHeaderFunction,
-                                 t,
-                               }) {
+  isOpen = false,
+  onClose,
+  url,
+  retrieveAuthHeaderFunction,
+  t,
+}) {
   const { UIModalService } = servicesManager.services;
 
   const showDicomStorePickerModal = () => {
     if (!UIModalService) {
-      return
+      return;
     }
 
     UIModalService.show({
@@ -23,7 +23,7 @@ function DicomFileUploaderModal({
       title: t('Upload DICOM Files'),
       contentProps: {
         url,
-        retrieveAuthHeaderFunction
+        retrieveAuthHeaderFunction,
       },
       onClose,
     });

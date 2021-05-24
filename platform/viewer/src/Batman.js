@@ -82,7 +82,7 @@ window.ohif.app = {
   extensionManager,
 };
 
-class App extends Component {
+class Batman extends Component {
   static propTypes = {
     config: PropTypes.oneOfType([
       PropTypes.func,
@@ -352,7 +352,7 @@ function _makeAbsoluteIfNecessary(url, base_url) {
 /*
  * Only wrap/use hot if in dev.
  */
-const ExportedApp = process.env.NODE_ENV === 'development' ? hot(App) : App;
+const ExportedApp = process.env.NODE_ENV === 'development' ? Batman : Batman;
 
 export default ExportedApp;
 export { commandsManager, extensionManager, hotkeysManager, servicesManager };

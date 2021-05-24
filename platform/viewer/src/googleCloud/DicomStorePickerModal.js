@@ -5,7 +5,7 @@ import './googleCloud.css';
 import { withTranslation } from 'react-i18next';
 import * as GoogleCloudUtilServers from './utils/getServers';
 
-import { servicesManager } from './../App.js';
+import { servicesManager } from './../Batman.js';
 
 function DicomStorePickerModal({
   isOpen = false,
@@ -36,7 +36,7 @@ function DicomStorePickerModal({
           user,
           url,
         },
-        onClose
+        onClose,
       });
     }
   };

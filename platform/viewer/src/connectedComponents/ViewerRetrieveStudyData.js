@@ -4,7 +4,7 @@ import usePrevious from '../customHooks/usePrevious';
 
 import ConnectedViewer from './ConnectedViewer.js';
 import PropTypes from 'prop-types';
-import { extensionManager } from './../App.js';
+import { extensionManager } from './../Batman.js';
 import { useSnackbarContext, ErrorPage } from '@ohif/ui';
 
 // Contexts

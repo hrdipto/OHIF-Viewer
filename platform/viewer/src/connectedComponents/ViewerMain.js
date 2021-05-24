@@ -1,5 +1,5 @@
 import './ViewerMain.css';
-import { servicesManager } from './../App.js';
+import { servicesManager } from './../Batman.js';
 import { Component } from 'react';
 import { ConnectedViewportGrid } from './../components/ViewportGrid/index.js';
 import PropTypes from 'prop-types';
@@ -142,7 +142,10 @@ class ViewerMain extends Component {
     if (displaySet.isDerived) {
       const { Modality } = displaySet;
       if (Modality === 'SEG' && servicesManager) {
-        const {LoggerService, UINotificationService} = servicesManager.services;
+        const {
+          LoggerService,
+          UINotificationService,
+        } = servicesManager.services;
         const onDisplaySetLoadFailureHandler = error => {
           LoggerService.error({ error, message: error.message });
           UINotificationService.show({
@@ -153,13 +156,12 @@ class ViewerMain extends Component {
           });
         };
 
-        const {referencedDisplaySet} = displaySet.getSourceDisplaySet(
+        const { referencedDisplaySet } = displaySet.getSourceDisplaySet(
           this.props.studies,
           true,
           onDisplaySetLoadFailureHandler
         );
         displaySet = referencedDisplaySet;
-
       } else {
         displaySet = displaySet.getSourceDisplaySet(this.props.studies);
       }
