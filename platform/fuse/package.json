@@ -1,0 +1,45 @@
+{
+	"name": "fuse-react-app",
+	"version": "6.1.1",
+	"private": true,
+	"dependencies": {
+
+	},
+	"peerDependencies": {
+		"autoprefixer": "9.8.6",
+		"postcss": "7.0.35",
+		"react": "17.0.2",
+		"react-dom": "17.0.2"
+	},
+	"resolutions": {
+		"react": "17.0.2",
+		"react-dom": "17.0.2"
+	},
+	"devDependencies": {
+
+	},
+	"scripts": {
+		"dev:fuse": "cross-env NODE_ENV=development webpack-dev-server --mode development --open --watch",
+		"build:fuse": "cross-env NODE_ENV=production node --max_old_space_size=4096 ./../../node_modules/webpack/bin/webpack.js --progress",
+		"start": "webpack-dev-server --mode development --open --hot",
+		"build": "webpack --mode production",
+		"test": "craco test --env=node",
+		"eject": "craco eject",
+		"build-docs": "find ./src/app/main/documentation/material-ui-components \\( -name '*.ts' -o -name '*.tsx' \\) -type f -delete && babel-node --presets @babel/preset-env src/app/main/documentation/material-ui-components/build.js",
+		"analyze": "craco build && source-map-explorer 'build/static/js/*.js' --html analyze-result.html",
+		"pnpify-sdk": "yarn pnpify --sdk",
+		"lint": "eslint"
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 3 safari version"
+		]
+	}
+}

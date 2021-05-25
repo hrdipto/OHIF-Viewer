@@ -1,0 +1,15 @@
+{
+  "name": "radassist",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev:radassist": "cross-env NODE_ENV=development webpack-dev-server --mode development --open --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "fuse-react-app": "6.1.1"
+  },
+  "author": "",
+  "license": "MIT"
+}

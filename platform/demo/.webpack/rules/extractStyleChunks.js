@@ -20,7 +20,13 @@ function extractStyleChunks(isProdBuild) {
       use: [
         'style-loader',
         'css-loader',
-        'postcss-loader',
+        {
+          loader: 'postcss-loader',
+          options: {
+            ident: 'postcss',
+            plugins: [require('tailwindcss'), require('autoprefixer')],
+          },
+        },
         // 'sass-loader',
       ],
     },

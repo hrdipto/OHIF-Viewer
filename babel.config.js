@@ -16,13 +16,20 @@ module.exports = {
             debug: false,
           },
         ],
-        '@babel/preset-react',
+        [
+          '@babel/preset-react',
+          {
+            runtime: 'automatic',
+          },
+        ],
       ],
       plugins: [
         '@babel/plugin-proposal-object-rest-spread',
         '@babel/plugin-syntax-dynamic-import',
         '@babel/plugin-transform-regenerator',
         '@babel/plugin-transform-runtime',
+        '@babel/plugin-proposal-optional-chaining',
+        '@babel/plugin-proposal-nullish-coalescing-operator',
       ],
     },
     production: {
@@ -37,7 +44,12 @@ module.exports = {
       presets: [
         // WebPack handles ES6 --> Target Syntax
         ['@babel/preset-env', { modules: false }],
-        '@babel/preset-react',
+        [
+          '@babel/preset-react',
+          {
+            runtime: 'automatic',
+          },
+        ],
       ],
       plugins: ['react-hot-loader/babel'],
       ignore: ['**/*.test.jsx', '**/*.test.js', '__snapshots__', '__tests__'],
