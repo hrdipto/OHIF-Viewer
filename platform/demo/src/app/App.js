@@ -10,6 +10,7 @@ import {
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { create } from 'jss';
 import jssExtend from 'jss-plugin-extend';
+import Superman from '@ohif/viewer';
 import rtl from 'jss-rtl';
 import Provider from 'react-redux/es/components/Provider';
 import { Router } from 'react-router-dom';
@@ -55,6 +56,7 @@ const App = () => {
                     >
                       <FuseLayout />
                       <div>NaXXXXXXXX</div>
+                      <Superman />
                     </SnackbarProvider>
                   </FuseTheme>
                 </FuseAuthorization>

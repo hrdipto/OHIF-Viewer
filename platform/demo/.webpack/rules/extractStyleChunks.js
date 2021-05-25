@@ -5,12 +5,7 @@ function extractStyleChunks(isProdBuild) {
     {
       test: /\.styl$/,
       use: [
-        {
-          loader: ExtractCssChunksPlugin.loader,
-          options: {
-            hot: !isProdBuild,
-          },
-        },
+        'style-loader',
         { loader: 'css-loader' },
         { loader: 'stylus-loader' },
       ],

@@ -3,22 +3,22 @@
 const path = require('path');
 const merge = require('webpack-merge');
 const webpack = require('webpack');
-const webpackBase = require('./../../../.webpack/webpack.base.js');
+const webpackBase = require('../../.webpack/webpack.base.js');
 // ~~ Plugins
-
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-// const ExtractCssChunksPlugin = require('extract-css-chunks-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { InjectManifest } = require('workbox-webpack-plugin');
+
 // ~~ Rules
-const extractStyleChunksRule = require('./rules/extractStyleChunks.js');
+const extractStyleChunksRule = require('./.webpack/rules/extractStyleChunks.js');
+
 // ~~ Directories
-const SRC_DIR = path.join(__dirname, '../src');
-const DIST_DIR = path.join(__dirname, '../dist');
-const PUBLIC_DIR = path.join(__dirname, '../public');
+const SRC_DIR = path.join(__dirname, './src');
+const DIST_DIR = path.join(__dirname, './dist');
+const PUBLIC_DIR = path.join(__dirname, './public');
+
 // ~~ Env Vars
-const HTML_TEMPLATE = process.env.HTML_TEMPLATE || 'index.html';
+const HTML_TEMPLATE = 'index.html';
 const PUBLIC_URL = process.env.PUBLIC_URL || '/';
 const APP_CONFIG = process.env.APP_CONFIG || 'config/default.js';
 const PROXY_TARGET = process.env.PROXY_TARGET;
@@ -34,8 +34,8 @@ module.exports = (env, argv) => {
     entry: ENTRY_TARGET,
     output: {
       path: DIST_DIR,
-      filename: isProdBuild ? '[name].bundle.[chunkhash].js' : '[name].js',
       publicPath: PUBLIC_URL, // Used by HtmlWebPackPlugin for asset prefix
+      filename: 'index_bundle.js',
     },
     module: {
       rules: [
@@ -43,19 +43,16 @@ module.exports = (env, argv) => {
           test: /\.(jpg|jpeg|png|woff|woff2|eot|ttf|svg)$/,
           loader: 'url-loader?limit=100000',
         },
-        ...extractStyleChunksRule(isProdBuild),
+        ...extractStyleChunksRule(false),
       ],
     },
     plugins: [
-      // Uncomment to generate bundle analyzer
-      // new BundleAnalyzerPlugin(),
-      // Clean output.path
       new CleanWebpackPlugin(),
 
       new webpack.ProvidePlugin({
         React: 'react',
       }),
-      // Copy "Public" Folder to Dist
+
       new CopyWebpackPlugin([
         {
           from: PUBLIC_DIR,
@@ -77,30 +74,18 @@ module.exports = (env, argv) => {
           to: `${DIST_DIR}/app-config.js`,
         },
       ]),
-      // https://github.com/faceyspacey/extract-css-chunks-webpack-plugin#webpack-4-standalone-installation
-      // new ExtractCssChunksPlugin({
-      //   filename: isProdBuild ? '[name].[hash].css' : '[name].css',
-      //   chunkFilename: isProdBuild ? '[id].[hash].css' : '[id].css',
-      //   ignoreOrder: false, // Enable to remove warnings about conflicting order
-      // }),
-      // Generate "index.html" w/ correct includes/imports
+      // new HtmlWebpackPlugin(),
       new HtmlWebpackPlugin({
+        // template: `${PUBLIC_DIR}/${HTML_TEMPLATE}`,
         template: `${PUBLIC_DIR}/html-templates/${HTML_TEMPLATE}`,
         filename: 'index.html',
         templateParameters: {
-          PUBLIC_URL: PUBLIC_URL,
+          PUBLIC_URL,
         },
       }),
-      // No longer maintained; but good for generating icons + manifest
-      // new FaviconsWebpackPlugin( path.join(PUBLIC_DIR, 'assets', 'icons-512.png')),
-      // new InjectManifest({
-      //   swDest: 'sw.js',
-      //   swSrc: path.join(SRC_DIR, 'service-worker.js'),
-      //   // Increase the limit to 4mb:
-      //   // maximumFileSizeToCacheInBytes: 4 * 1024 * 1024
-      // }),
+      // new MiniCssExtractPlugin()
     ],
-    // https://webpack.js.org/configuration/dev-server/
+
     devServer: {
       // gzip compression of everything served
       // Causes Cypress: `wait-on` issue in CI
@@ -109,13 +94,16 @@ module.exports = (env, argv) => {
       // https: true,
       hot: true,
       open: true,
-      port: 3002,
+      port: 3003,
       host: '0.0.0.0',
-      public: 'http://localhost:' + 3002,
+      public: 'http://localhost:3003',
       historyApiFallback: {
         disableDotRule: true,
       },
+
+      // contentBase: [path.join(__dirname, '/public'), path.join(__dirname, '/assets')]
     },
+
     resolve: {
       alias: {
         '@fuse': path.resolve(__dirname, '../fuse/src/@fuse'),
@@ -135,6 +123,5 @@ module.exports = (env, argv) => {
   if (!isProdBuild) {
     mergedConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
   }
-
   return mergedConfig;
 };
