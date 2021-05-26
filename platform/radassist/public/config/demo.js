@@ -6,13 +6,15 @@ window.config = {
     dicomWeb: [
       {
         name: 'DCM4CHEE',
-        wadoUriRoot: 'https://server.dcmjs.org/dcm4chee-arc/aets/DCM4CHEE/wado',
-        qidoRoot: 'https://server.dcmjs.org/dcm4chee-arc/aets/DCM4CHEE/rs',
-        wadoRoot: 'https://server.dcmjs.org/dcm4chee-arc/aets/DCM4CHEE/rs',
+        wadoUriRoot:
+          'https://dev.radassist.net/dcm4chee-arc/aets/DCM4CHEE/wado',
+        qidoRoot: 'https://dev.radassist.net/dcm4chee-arc/aets/DCM4CHEE/rs',
+        wadoRoot: 'https://dev.radassist.net/dcm4chee-arc/aets/DCM4CHEE/rs',
         qidoSupportsIncludeField: true,
         imageRendering: 'wadors',
         thumbnailRendering: 'wadors',
         enableStudyLazyLoad: true,
+        supportsFuzzyMatching: true,
       },
     ],
   },

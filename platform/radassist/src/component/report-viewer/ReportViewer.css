@@ -1,0 +1,13 @@
+.LeftContent {
+	position: fixed;
+	height: 100%;
+	width: 48%;
+}
+
+.Rightcontent {
+	overflow: auto;
+}
+
+.LeftContent .cornerstone-canvas {
+	height: 838px;
+}

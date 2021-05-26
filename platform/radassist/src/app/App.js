@@ -54,7 +54,6 @@ const App = () => {
                       }}
                     >
                       <FuseLayout />
-                      <div>NaXXXXXXXX</div>
                     </SnackbarProvider>
                   </FuseTheme>
                 </FuseAuthorization>

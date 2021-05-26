@@ -12,7 +12,7 @@ import ConnectedStudyBrowser from './ConnectedStudyBrowser.js';
 import ConnectedViewerMain from './ConnectedViewerMain.js';
 import SidePanel from './../components/SidePanel.js';
 import ErrorBoundaryDialog from './../components/ErrorBoundaryDialog';
-import { extensionManager } from './../Batman.js';
+import { extensionManager } from '../MainViewer.js';
 import { ReconstructionIssues } from './../../../core/src/enums.js';
 import dcmjs from 'dcmjs';
 
@@ -273,33 +273,31 @@ class Viewer extends Component {
     return (
       <>
         {/* HEADER */}
-        <WhiteLabelingContext.Consumer>
-          {whiteLabeling => (
-            <UserManagerContext.Consumer>
-              {userManager => (
-                <AppContext.Consumer>
-                  {appContext => (
-                    <ConnectedHeader
-                      linkText={
-                        appContext.appConfig.showStudyList
-                          ? 'Study List'
-                          : undefined
-                      }
-                      linkPath={
-                        appContext.appConfig.showStudyList ? '/' : undefined
-                      }
-                      userManager={userManager}
-                    >
-                      {whiteLabeling &&
-                        whiteLabeling.createLogoComponentFn &&
-                        whiteLabeling.createLogoComponentFn(React)}
-                    </ConnectedHeader>
-                  )}
-                </AppContext.Consumer>
-              )}
-            </UserManagerContext.Consumer>
-          )}
-        </WhiteLabelingContext.Consumer>
+        {whiteLabeling => (
+          <UserManagerContext.Consumer>
+            {userManager => (
+              <AppContext.Consumer>
+                {appContext => (
+                  <ConnectedHeader
+                    linkText={
+                      appContext.appConfig.showStudyList
+                        ? 'Study List'
+                        : undefined
+                    }
+                    linkPath={
+                      appContext.appConfig.showStudyList ? '/' : undefined
+                    }
+                    userManager={userManager}
+                  >
+                    {whiteLabeling &&
+                      whiteLabeling.createLogoComponentFn &&
+                      whiteLabeling.createLogoComponentFn(React)}
+                  </ConnectedHeader>
+                )}
+              </AppContext.Consumer>
+            )}
+          </UserManagerContext.Consumer>
+        )}
 
         {/* TOOLBAR */}
         <ErrorBoundaryDialog context="ToolbarRow">

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { StudyBrowser } from '@ohif/ui';
 import cloneDeep from 'lodash.clonedeep';
 import findDisplaySetByUID from './findDisplaySetByUID';
-import { servicesManager } from './../Batman.js';
+import { servicesManager } from '../MainViewer.js';
 
 const { studyMetadataManager } = OHIF.utils;
 

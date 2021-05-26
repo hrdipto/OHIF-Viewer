@@ -3,7 +3,7 @@ import { metadata, utils } from '@ohif/core';
 
 import ConnectedViewer from './ConnectedViewer.js';
 import PropTypes from 'prop-types';
-import { extensionManager } from './../Batman.js';
+import { extensionManager } from '../MainViewer.js';
 import Dropzone from 'react-dropzone';
 import filesToStudies from '../lib/filesToStudies';
 import './ViewerLocalFileData.css';

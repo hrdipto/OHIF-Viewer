@@ -5,7 +5,7 @@ import './googleCloud.css';
 import { withTranslation } from 'react-i18next';
 import * as GoogleCloudUtilServers from './utils/getServers';
 
-import { servicesManager } from './../Batman.js';
+import { servicesManager } from '../MainViewer.js';
 
 function DicomStorePickerModal({
   isOpen = false,

@@ -1,5 +1,5 @@
 import './ViewerMain.css';
-import { servicesManager } from './../Batman.js';
+import { servicesManager } from '../MainViewer.js';
 import { Component } from 'react';
 import { ConnectedViewportGrid } from './../components/ViewportGrid/index.js';
 import PropTypes from 'prop-types';

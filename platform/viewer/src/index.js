@@ -5,7 +5,7 @@
 
 import 'regenerator-runtime/runtime';
 
-import Superman from './Superman.js';
+import ohifViewer from './ohifViewer.js';
 // test
 
 /**
@@ -30,4 +30,4 @@ import Superman from './Superman.js';
  * Default Settings
  */
 
-export default Superman;
+export default ohifViewer;

@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { hotkeysValidators } from './hotkeysValidators';
 import { MODIFIER_KEYS } from './hotkeysConfig';
 
-import { hotkeysManager } from '../../Batman';
+import { hotkeysManager } from '../../MainViewer';
 
 import './HotkeysPreferences.styl';
 /**

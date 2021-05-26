@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import DicomUploader from './DicomUploader';
 import { withTranslation } from 'react-i18next';
-import { servicesManager } from './../Batman.js';
+import { servicesManager } from '../MainViewer.js';
 
 function DicomFileUploaderModal({
   isOpen = false,

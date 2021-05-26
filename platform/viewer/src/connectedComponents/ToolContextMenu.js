@@ -1,7 +1,7 @@
 import { ContextMenu } from '@ohif/ui';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { commandsManager } from './../Batman.js';
+import { commandsManager } from '../MainViewer.js';
 
 const toolTypes = [
   'Angle',
