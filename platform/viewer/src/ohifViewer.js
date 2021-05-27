@@ -61,8 +61,7 @@ class OhifViewer extends Component {
     };
 
     return (
-      <div>
-        <p>NaXXXXX</p>
+      <div className="ohif-viewer">
         <MainViewer {...appProps} />
       </div>
     );

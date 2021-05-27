@@ -298,7 +298,6 @@ class Viewer extends Component {
             )}
           </UserManagerContext.Consumer>
         )}
-
         {/* TOOLBAR */}
         <ErrorBoundaryDialog context="ToolbarRow">
           <ToolbarRow

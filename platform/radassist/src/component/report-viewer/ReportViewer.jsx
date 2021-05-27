@@ -8,6 +8,8 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import { Icon } from '@material-ui/core';
+import OhifViewer from '@ohif/viewer';
+
 import {
   flattenErrorMessages,
   formatDate,
@@ -46,7 +48,11 @@ import Fade from '@material-ui/core/Fade';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import './ReportViewer.css';
 // import ConnectedViewerRetrieveStudyData from '../connectedComponents/ConnectedViewerRetrieveStudyData';
-import OhifViewer from '@ohif/viewer';
+import FullscreenIcon from '@material-ui/icons/Fullscreen';
+import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
+
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const styles = theme => ({
   root: {
@@ -86,6 +92,7 @@ class ReportViewer extends React.Component {
       anchorEl: null,
       unreported: false,
       openModal: false,
+      // details: this.props.location.state.details,
       // templates: {},
       // templateName: null
     };
@@ -137,6 +144,7 @@ class ReportViewer extends React.Component {
       author: result.author,
       createdAt: result.created_at,
       status: result.status,
+      fullScreen: false,
     });
 
     // console.log('after setting state onload', this.state.contentState);
@@ -294,6 +302,36 @@ class ReportViewer extends React.Component {
     // XRayApi.postReportFeedback(this.props.match.params.reportId, data, this.formSubmitApiCallback);
   };
 
+  handleFullScreen = side => {
+    if (side === 'left') {
+      document.querySelector('.LeftContent').style.width = '95%';
+      document.querySelector('.LeftContent').style.paddingRight = '10px';
+      document.querySelector('.Rightcontent').style.display = 'none';
+    } else {
+      document.querySelector('.LeftContent').style.display = 'none';
+
+      var element = document.getElementById('report');
+      element.classList.remove('col-xs-6');
+      document.querySelector('.Rightcontent').style.width = '100%';
+    }
+    this.setState({ fullScreen: true });
+  };
+
+  handleFullScreenExit = side => {
+    if (side === 'left') {
+      document.querySelector('.LeftContent').style.width = '48%';
+      document.querySelector('.Rightcontent').style.display = 'block';
+    } else {
+      document.querySelector('.LeftContent').style.display = 'block';
+      document.querySelector('.LeftContent .cornerstone-canvas').style.height =
+        '838px';
+      var element = document.getElementById('report');
+      element.classList.add('col-xs-6');
+      document.querySelector('.Rightcontent').style.width = '0%';
+    }
+    this.setState({ fullScreen: false });
+  };
+
   // GetContent = e => {
   // 	e.persist();
   // 	const content_value = JSON.parse(e.target.value);
@@ -337,24 +375,46 @@ class ReportViewer extends React.Component {
 
     // const templates = this.state.templates;
     const { classes } = this.props;
+    const fullScreen = (side, value) => {
+      this.handleFullScreen(side);
+    };
+    const fullScreenExit = (side, value) => {
+      this.handleFullScreenExit(side);
+    };
+    const fullScreenLeft = fullScreen.bind(this, 'left');
+    const fullScreenRight = fullScreen.bind(this, 'right');
+    const fullScreenExitLeft = fullScreenExit.bind(this, 'left');
+    const fullScreenExitRight = fullScreenExit.bind(this, 'right');
     return (
       <div className="ReportContainer">
         <Grid fluid>
           <Row>
-            <Col xs={6}>
+            <Col xs={7}>
               <div className="LeftContent">
+                {this.state.fullScreen ? (
+                  <IconButton onClick={fullScreenExitLeft}>
+                    <FullscreenExitIcon />
+                  </IconButton>
+                ) : (
+                  <IconButton onClick={fullScreenLeft}>
+                    <FullscreenIcon />
+                  </IconButton>
+                )}
                 {/* {xrayUrl.length ? <DwvComponent fileURL={xrayUrl} /> : ''} */}
-                {/* <ConnectedViewerRetrieveStudyData
-                  studyInstanceUIDs={[
-                    this.props.match.params.studyInstanceUIDs,
-                  ]}
-                  seriesInstanceUIDs={null}
-                /> */}
                 <OhifViewer />
               </div>
             </Col>
 
-            <Col xs={6} className="Rightcontent">
+            <Col xs={5} className="Rightcontent" id="report">
+              {this.state.fullScreen ? (
+                <IconButton onClick={fullScreenExitRight}>
+                  <FullscreenExitIcon />
+                </IconButton>
+              ) : (
+                <IconButton onClick={fullScreenRight}>
+                  <FullscreenIcon />
+                </IconButton>
+              )}
               <div>
                 <Container style={{ marginBottom: '5%', width: 'auto' }}>
                   <Card>
@@ -371,193 +431,133 @@ class ReportViewer extends React.Component {
                         )}
                       </Row>
 
-                      <Row style={{ marginTop: '5%' }}>
-                        <Col xs={6} style={{ marginLeft: '15px' }}>
-                          {/* <a style={{ 'margin-left': '10px', 'display': 'block' }} href={xrayUrl} target="_blank">Download Xray</a> */}
+                      {/* <Card> */}
+                      <CardContent>
+                        <h1>Patiet Details</h1>
 
-                          <ExpansionPanel>
-                            <ExpansionPanelSummary
-                              expandIcon={<ExpandMoreIcon />}
-                              aria-controls="panel1a-content"
-                              id="panel1a-header"
-                            >
-                              <Typography style={{ fontSize: '20px' }}>
-                                Previous Reports
-                              </Typography>
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
-                              <Typography>
-                                {report_feedback.map(itm => (
-                                  <span>
-                                    <p style={{ marginTop: '15px' }}>
-                                      {itm.reviewer.name} -{' '}
-                                      {moment(itm.created_at).format(
-                                        'YYYY-MM-DD HH:mm:ss'
-                                      )}
-                                    </p>
-                                    <Card>
-                                      <CardContent>
-                                        {parse(
-                                          draftToHtml(itm.feedback_report)
-                                        )}
-                                      </CardContent>
-                                      <Button
-                                        style={{ fontSize: '12px' }}
-                                        color="primary"
-                                        variant="contained"
-                                        onClick={e =>
-                                          downloadReport(
-                                            draftToHtml(itm.feedback_report)
-                                          )
-                                        }
-                                      >
-                                        Download AS Word Document
-                                      </Button>
-                                    </Card>
-                                  </span>
-                                ))}
-                              </Typography>
-                            </ExpansionPanelDetails>
-                          </ExpansionPanel>
-                        </Col>
+                        <Row>
+                          {/* <Col
+                            xs={5}
+                            style={{ fontSize: '18px', marginTop: '35px' }}
+                          >
+                            patientName: {this.state.details['cells'][0].value}
+                          </Col>
+                          <Col
+                            xs={5}
+                            style={{ fontSize: '18px', marginTop: '35px' }}
+                          >
+                            uniqueID: {this.state.details['cells'][1].value}
+                          </Col> */}
+                          {/* <Col xs={5} style={{ fontSize: '18px', marginTop: '35px' }}>
+															studyInstanceID: {this.state.details['cells'][2].value}
+														</Col> */}
+                          {/* <Col
+                            xs={5}
+                            style={{ fontSize: '18px', marginTop: '35px' }}
+                          >
+                            age: {this.state.details['cells'][3].value}
+                          </Col>
+                          <Col
+                            xs={5}
+                            style={{ fontSize: '18px', marginTop: '35px' }}
+                          >
+                            gender: {this.state.details['cells'][4].value}
+                          </Col>
+                          <Col
+                            xs={5}
+                            style={{ fontSize: '18px', marginTop: '35px' }}
+                          >
+                            reviewers: {this.state.details['cells'][5].value}
+                          </Col>
+                          <Col
+                            xs={5}
+                            style={{ fontSize: '18px', marginTop: '35px' }}
+                          >
+                            created: {this.state.details['cells'][6].value}
+                          </Col>
+                          <Col
+                            xs={5}
+                            style={{ fontSize: '18px', marginTop: '35px' }}
+                          >
+                            createdBy: {this.state.details['cells'][7].value}
+                          </Col>
+                          <Col
+                            xs={5}
+                            style={{ fontSize: '18px', marginTop: '35px' }}
+                          >
+                            hospital: {this.state.details['cells'][8].value}
+                          </Col>
+                          <Col
+                            xs={5}
+                            style={{ fontSize: '18px', marginTop: '35px' }}
+                          >
+                            reportStatus: {this.state.details['cells'][9].value}
+                          </Col>
+                          <Col
+                            xs={5}
+                            style={{ fontSize: '18px', marginTop: '35px' }}
+                          >
+                            reportcreated:{' '}
+                            {this.state.details['cells'][10].value}
+                          </Col> */}
 
-                        {/* <Modal
-												open={this.state.dwvModalIsOpen}
-												onClose={this.handleClose}
-												aria-labelledby="simple-modal-title"
-												aria-describedby="simple-modal-description"
-											>
-												{
-													<div style={{ width: '100%', height: '100%' }}>
-														<IconButton
-															style={{ position: 'absolute', right: '0px' }}
-															aria-label="close"
-															color="red"
-															size="big"
-															onClick={this.handleClose}
-														>
-															<CloseIcon style={{ color: 'red' }} fontSize="inherit" />
-														</IconButton>
-														<div
-															style={{
-																'min-width': '400px',
-																width: '50%',
-																height: '100%',
-																display: 'block',
-																'margin-left': 'auto',
-																'margin-right': 'auto'
-															}}
-														>
-															<DwvComponent fileURL={xrayUrl} />
-														</div>
-														<div
-															style={{
-																float: 'left',
-																'min-width': '400px',
-																width: '50%',
-																height: '100%'
-															}}
-														>
-															<Container
-																style={{
-																	marginTop: '10%',
-																	marginBottom: '5%',
-																	width: 'auto',
-																	'min-width': '400px'
-																}}
-															>
-																<Card>
-																	<CardContent>
-																		<div style={{ margin: '5%' }}>
-																			<div
-																				style={{
-																					textAlign: 'left',
-																					marginBottom: '10px'
-																				}}
-																			>
-																				<span style={{ fontSize: '18px' }}>
-																					Write Report
-																				</span>
-																			</div>
-																			<RichTextEditor
-																				editorState={editorState}
-																				onEditorStateChange={
-																					this.onEditorStateChange
-																				}
-																				onContentStateChange={
-																					this.onContentStateChange
-																				}
-																			/>
-																			<Button
-																				color="primary"
-																				variant="contained"
-																				onClick={this.downloadReport}
-																				className="w-full"
-																			>
-																				Download AS Word Document
-																			</Button>
-																		</div>
-																		<Container>
-																			<Button
-																				style={{
-																					marginTop: '50px',
-																					left: -150,
-																					marginLeft: '50%',
-																					minWidth: '300px'
-																				}}
-																				color="primary"
-																				variant="contained"
-																				onClick={this.handleSubmit}
-																			>
-																				Submit
-																			</Button>
-																		</Container>
-																	</CardContent>
-																</Card>
-															</Container>
-														</div>
-													</div>
-												}
-											</Modal> */}
-
-                        <Col xs={5}>
-                          <div>
-                            <ExpansionPanel>
-                              <ExpansionPanelSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel1a-content"
-                                id="panel1a-header"
+                          <Col xs={6} className={classes.root}>
+                            <List component="nav" aria-label="Device settings">
+                              <ListItem
+                                button
+                                aria-haspopup="true"
+                                aria-controls="lock-menu"
+                                aria-label="when device is locked"
+                                onClick={this.handleClickListItem}
+                                style={{
+                                  border: '2px solid #707070',
+                                  borderRadius: '25px',
+                                }}
                               >
-                                <Typography style={{ fontSize: '20px' }}>
-                                  Xray Links
-                                </Typography>
-                              </ExpansionPanelSummary>
-                              <ExpansionPanelDetails>
-                                <Typography>
-                                  {xrayUrl.map(link => (
-                                    <a href={link} target="_blank">
-                                      <Typography
-                                        className={clsx(
-                                          xrayUrl.classes,
-                                          'flex items-center'
-                                        )}
-                                        style={{ fontSize: '12px' }}
-                                      >
-                                        {
-                                          link.split('/')[
-                                            link.split('/').length - 1
-                                          ]
-                                        }
-                                      </Typography>
-                                      <br />
-                                    </a>
-                                  ))}
-                                </Typography>
-                              </ExpansionPanelDetails>
-                            </ExpansionPanel>
-                          </div>
-                        </Col>
-                      </Row>
+                                {unreported ? (
+                                  <ListItemText
+                                    style={{}}
+                                    primary="Set Report Status"
+                                    secondary="Unreported"
+                                  />
+                                ) : (
+                                  <ListItemText
+                                    style={{}}
+                                    primary="Set Report Status"
+                                    secondary={options[selectedIndex]}
+                                  />
+                                )}
+
+                                <ArrowDropDownIcon />
+                              </ListItem>
+                            </List>
+                            <Menu
+                              id="lock-menu"
+                              anchorEl={anchorEl}
+                              keepMounted
+                              open={Boolean(anchorEl)}
+                              onClose={this.handleClosestatus}
+                            >
+                              {options.map((option, index) => (
+                                <MenuItem
+                                  key={option}
+                                  selected={index === selectedIndex}
+                                  onClick={event =>
+                                    this.handleMenuItemClick(
+                                      event,
+                                      index,
+                                      options[index]
+                                    )
+                                  }
+                                >
+                                  {option}
+                                </MenuItem>
+                              ))}
+                            </Menu>
+                          </Col>
+                        </Row>
+                      </CardContent>
+                      {/* </Card> */}
                     </CardContent>
                   </Card>
                 </Container>
@@ -572,73 +572,7 @@ class ReportViewer extends React.Component {
                             marginBottom: '10px',
                             marginTop: '0px',
                           }}
-                        >
-                          <Row>
-                            <Col
-                              xs={5}
-                              style={{ fontSize: '18px', marginTop: '35px' }}
-                            >
-                              Write Report
-                            </Col>
-                            <Col xs={6} className={classes.root}>
-                              <List
-                                component="nav"
-                                aria-label="Device settings"
-                              >
-                                <ListItem
-                                  button
-                                  aria-haspopup="true"
-                                  aria-controls="lock-menu"
-                                  aria-label="when device is locked"
-                                  onClick={this.handleClickListItem}
-                                  style={{
-                                    border: '2px solid #707070',
-                                    borderRadius: '25px',
-                                  }}
-                                >
-                                  {unreported ? (
-                                    <ListItemText
-                                      style={{}}
-                                      primary="Set Report Status"
-                                      secondary="Unreported"
-                                    />
-                                  ) : (
-                                    <ListItemText
-                                      style={{}}
-                                      primary="Set Report Status"
-                                      secondary={options[selectedIndex]}
-                                    />
-                                  )}
-
-                                  <ArrowDropDownIcon />
-                                </ListItem>
-                              </List>
-                              <Menu
-                                id="lock-menu"
-                                anchorEl={anchorEl}
-                                keepMounted
-                                open={Boolean(anchorEl)}
-                                onClose={this.handleClosestatus}
-                              >
-                                {options.map((option, index) => (
-                                  <MenuItem
-                                    key={option}
-                                    selected={index === selectedIndex}
-                                    onClick={event =>
-                                      this.handleMenuItemClick(
-                                        event,
-                                        index,
-                                        options[index]
-                                      )
-                                    }
-                                  >
-                                    {option}
-                                  </MenuItem>
-                                ))}
-                              </Menu>
-                            </Col>
-                          </Row>
-                        </Grid>
+                        ></Grid>
                         <RichTextEditor
                           editorState={editorState}
                           onEditorStateChange={this.onEditorStateChange}
