@@ -1,15 +1,14 @@
 .LeftContent {
-  position: fixed;
-  height: 100%;
+}
+
+.LeftContent .ToolbarRow {
   max-width: 100%;
 }
 
 .Rightcontent {
-  overflow: auto;
 }
 
 .LeftContent .cornerstone-canvas {
-  height: 838px;
 }
 
 .ohif-viewer .ToolbarRow .toolbar-button {

@@ -389,7 +389,7 @@ class ReportViewer extends React.Component {
       <div className="ReportContainer">
         <Grid fluid>
           <Row>
-            <Col xs={7}>
+            <Col xs={12} md={7}>
               <div className="LeftContent">
                 {this.state.fullScreen ? (
                   <IconButton onClick={fullScreenExitLeft}>
@@ -405,7 +405,7 @@ class ReportViewer extends React.Component {
               </div>
             </Col>
 
-            <Col xs={5} className="Rightcontent" id="report">
+            <Col xs={12} md={5} className="Rightcontent" id="report">
               {this.state.fullScreen ? (
                 <IconButton onClick={fullScreenExitRight}>
                   <FullscreenExitIcon />
